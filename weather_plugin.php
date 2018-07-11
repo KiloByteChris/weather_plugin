@@ -48,6 +48,22 @@ class Open_Weather_API extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
 		}
 		/*
+			Display a form asking the user for a location for the weather forcast
+		*/
+		function displayWeatherForm() {
+			$weatherFormDisplay = '<form class="weatherDisplayForm">
+				<label for="locationInput">Location</label>
+				<input type="text" name="locationInput"/>
+				<label for="forecastType">Weather Forecast</label>
+				<select name="forecastType">
+					<option value="currentWeather">Current Weather</option>
+					<option value="weekWeather">Weekly Forecast</option>
+				</select>
+				<button value="submit" name="submit">Get Weather</button>
+			</form>';
+			echo $weatherFormDisplay;
+		}
+		/*
 			Function used to request API information using curl
 		*/
 		function callAPI($url) {
@@ -74,7 +90,6 @@ class Open_Weather_API extends WP_Widget {
 			$weatherData = json_decode($weatherData);
 			return $weatherData;
 		}
-
 		/*
 			Function to build an HTML string that displays the weather infromation
 			Echos html to the page
@@ -101,6 +116,7 @@ class Open_Weather_API extends WP_Widget {
 
 			echo $weatherDisplayString;
 		}
+		displayWeatherForm();
 		$weatherData = getWeather();
 		displayWeather($weatherData, $instance);
 	}
